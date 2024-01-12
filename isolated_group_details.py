@@ -47,7 +47,7 @@ def cooperation_level_within_an_isolated_group(b):
             for n in G.nodes():
                 neighbor = random.choice(Neighbor[n])
                 if rewards[t][neighbor] > rewards[t][n]:
-                    if random.random() < 1 / (1 + np.exp((rewards[t][n] / G.degree(n) - rewards[t][neighbor] / G.degree(neighbor)) / 0.1)):
+                    if random.random() < 1 / (1 + np.exp((rewards[t][n] - rewards[t][neighbor]) / 0.1)):
                         actions[t + 1][n] = actions[t][neighbor]
                     else:
                         actions[t + 1][n] = actions[t][n]
