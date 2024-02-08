@@ -10,21 +10,20 @@ def cooperation_level_within_an_isolated_group(b):
     N = 1000
     M = 4
     c = 1
-    epochs = 1000
+    epochs = 100
     cooperation_level = np.zeros((epochs, rounds))
     for epoch in range(epochs):
-        if epoch // 100 == 0:
-            G = nx.barabasi_albert_graph(N, M)
-            Neighbor = {}
-            for edge in G.edges():
-                if edge[0] not in Neighbor:
-                    Neighbor[edge[0]] = [edge[1]]
-                else:
-                    Neighbor[edge[0]].append(edge[1])
-                if edge[1] not in Neighbor:
-                    Neighbor[edge[1]] = [edge[0]]
-                else:
-                    Neighbor[edge[1]].append(edge[0])
+        G = nx.barabasi_albert_graph(N, M)
+        Neighbor = {}
+        for edge in G.edges():
+            if edge[0] not in Neighbor:
+                Neighbor[edge[0]] = [edge[1]]
+            else:
+                Neighbor[edge[0]].append(edge[1])
+            if edge[1] not in Neighbor:
+                Neighbor[edge[1]] = [edge[0]]
+            else:
+                Neighbor[edge[1]].append(edge[0])
         actions = {time: {} for time in range(rounds)}
         rewards = {time: {} for time in range(rounds)}
         cooperation_level[epoch][0] += 0.5
