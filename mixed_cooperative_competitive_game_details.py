@@ -12,35 +12,34 @@ def cooperation_level_within_g1(b, r):
     p = 0.001
     E = int(p * N * N)
     c = 1
-    epochs = 1000
+    epochs = 100
     cooperation_level = np.zeros((epochs, rounds))
     for epoch in range(epochs):
-        if epoch // 100 == 0:
-            g1 = nx.barabasi_albert_graph(N, M)
-            g2 = nx.barabasi_albert_graph(N, M)
-            G1 = nx.Graph()
-            for edge in g1.edges():
-                G1.add_edge('r' + str(edge[0]), 'r' + str(edge[1]))
-            G2 = nx.Graph()
-            for edge in g2.edges():
-                G2.add_edge('b' + str(edge[0]), 'b' + str(edge[1]))
-            between_network = {}
-            between_network_reverse = {}
-            num_between_network = 0
-            while num_between_network < E:
-                edge = (random.choice(list(G1.nodes())), random.choice(list(G2.nodes())))
-                if edge[0] in between_network:
-                    if edge[1] not in between_network[edge[0]]:
-                        between_network[edge[0]].append(edge[1])
-                        num_between_network += 1
-                else:
-                    between_network[edge[0]] = [edge[1]]
+        g1 = nx.barabasi_albert_graph(N, M)
+        g2 = nx.barabasi_albert_graph(N, M)
+        G1 = nx.Graph()
+        for edge in g1.edges():
+            G1.add_edge('r' + str(edge[0]), 'r' + str(edge[1]))
+        G2 = nx.Graph()
+        for edge in g2.edges():
+            G2.add_edge('b' + str(edge[0]), 'b' + str(edge[1]))
+        between_network = {}
+        between_network_reverse = {}
+        num_between_network = 0
+        while num_between_network < E:
+            edge = (random.choice(list(G1.nodes())), random.choice(list(G2.nodes())))
+            if edge[0] in between_network:
+                if edge[1] not in between_network[edge[0]]:
+                    between_network[edge[0]].append(edge[1])
+                    num_between_network += 1
+            else:
+                between_network[edge[0]] = [edge[1]]
 
-                if edge[1] in between_network_reverse:
-                    if edge[0] not in between_network_reverse[edge[1]]:
-                        between_network_reverse[edge[1]].append(edge[0])
-                else:
-                    between_network_reverse[edge[1]] = [edge[0]]
+            if edge[1] in between_network_reverse:
+                if edge[0] not in between_network_reverse[edge[1]]:
+                    between_network_reverse[edge[1]].append(edge[0])
+            else:
+                between_network_reverse[edge[1]] = [edge[0]]
         actions = {time: {} for time in range(rounds)}
         rewards = {time: {} for time in range(rounds)}
         cooperation_level[epoch][0] += 0.5
@@ -113,7 +112,7 @@ def cooperation_level_within_g1(b, r):
 
 if __name__ == '__main__':
     process_list = []
-    b_list = [3, 4, 5, 6]
+    b_list = [3, 4, 5]
     r_list = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9]
     for b in b_list:
         for r in r_list:
