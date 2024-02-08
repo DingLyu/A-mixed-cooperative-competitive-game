@@ -12,55 +12,55 @@ def cooperation_level_within_g1_degree_heterogenity(b, r, opt):
     E = int(p * N * N)
 
     c = 1
-    epochs = 1000
+    epochs = 100
     cooperation_level1 = np.zeros((epochs, rounds))
     cooperation_level2 = np.zeros((epochs, rounds))
     for epoch in range(epochs):
-        if epoch // 100 == 0:
-            g1 = nx.barabasi_albert_graph(N, M)
-            g2 = nx.barabasi_albert_graph(N, M)
-            G1 = nx.Graph()
-            for edge in g1.edges():
-                G1.add_edge('r' + str(edge[0]), 'r' + str(edge[1]))
-            G2 = nx.Graph()
-            for edge in g2.edges():
-                G2.add_edge('b' + str(edge[0]), 'b' + str(edge[1]))
-            G1_deg, G2_deg, G1_deg_inv, G2_deg_inv = [], [], [], []
-            for node1 in G1.nodes():
-                G1_deg.append(G1.degree(node1))
-                G1_deg_inv.append(1 / G1.degree(node1))
-            for node2 in G2.nodes():
-                G2_deg.append(G2.degree(node2))
-                G2_deg_inv.append(1 / G2.degree(node2))
-            G1_deg = np.array(G1_deg) / sum(G1_deg)
-            G1_deg_inv = np.array(G1_deg_inv) / sum(G1_deg_inv)
-            G2_deg = np.array(G2_deg) / sum(G2_deg)
-            G2_deg_inv = np.array(G2_deg_inv) / sum(G2_deg_inv)
-            between_network = {}
-            between_network_reverse = {}
-            num_between_network = 0
-            while num_between_network < E:
-                if opt == 'high2high':
-                    edge = (np.random.choice(G1.nodes(), replace=True, p=G1_deg),
-                            np.random.choice(G2.nodes(), replace=True, p=G2_deg))
-                elif opt == 'high2low':
-                    edge = (np.random.choice(G1.nodes(), replace=True, p=G1_deg),
-                            np.random.choice(G2.nodes(), replace=True, p=G2_deg_inv))
-                elif opt == 'low2low':
-                    edge = (np.random.choice(G1.nodes(), replace=True, p=G1_deg_inv),
-                            np.random.choice(G2.nodes(), replace=True, p=G2_deg_inv))
-                if edge[0] in between_network:
-                    if edge[1] not in between_network[edge[0]]:
-                        between_network[edge[0]].append(edge[1])
-                        num_between_network += 1
-                else:
-                    between_network[edge[0]] = [edge[1]]
 
-                if edge[1] in between_network_reverse:
-                    if edge[0] not in between_network_reverse[edge[1]]:
-                        between_network_reverse[edge[1]].append(edge[0])
-                else:
-                    between_network_reverse[edge[1]] = [edge[0]]
+        g1 = nx.barabasi_albert_graph(N, M)
+        g2 = nx.barabasi_albert_graph(N, M)
+        G1 = nx.Graph()
+        for edge in g1.edges():
+            G1.add_edge('r' + str(edge[0]), 'r' + str(edge[1]))
+        G2 = nx.Graph()
+        for edge in g2.edges():
+            G2.add_edge('b' + str(edge[0]), 'b' + str(edge[1]))
+        G1_deg, G2_deg, G1_deg_inv, G2_deg_inv = [], [], [], []
+        for node1 in G1.nodes():
+            G1_deg.append(G1.degree(node1))
+            G1_deg_inv.append(1 / G1.degree(node1))
+        for node2 in G2.nodes():
+            G2_deg.append(G2.degree(node2))
+            G2_deg_inv.append(1 / G2.degree(node2))
+        G1_deg = np.array(G1_deg) / sum(G1_deg)
+        G1_deg_inv = np.array(G1_deg_inv) / sum(G1_deg_inv)
+        G2_deg = np.array(G2_deg) / sum(G2_deg)
+        G2_deg_inv = np.array(G2_deg_inv) / sum(G2_deg_inv)
+        between_network = {}
+        between_network_reverse = {}
+        num_between_network = 0
+        while num_between_network < E:
+            if opt == 'high2high':
+                edge = (np.random.choice(G1.nodes(), replace=True, p=G1_deg),
+                        np.random.choice(G2.nodes(), replace=True, p=G2_deg))
+            elif opt == 'high2low':
+                edge = (np.random.choice(G1.nodes(), replace=True, p=G1_deg),
+                        np.random.choice(G2.nodes(), replace=True, p=G2_deg_inv))
+            elif opt == 'low2low':
+                edge = (np.random.choice(G1.nodes(), replace=True, p=G1_deg_inv),
+                        np.random.choice(G2.nodes(), replace=True, p=G2_deg_inv))
+            if edge[0] in between_network:
+                if edge[1] not in between_network[edge[0]]:
+                    between_network[edge[0]].append(edge[1])
+                    num_between_network += 1
+            else:
+                between_network[edge[0]] = [edge[1]]
+
+            if edge[1] in between_network_reverse:
+                if edge[0] not in between_network_reverse[edge[1]]:
+                    between_network_reverse[edge[1]].append(edge[0])
+            else:
+                between_network_reverse[edge[1]] = [edge[0]]
 
 
         actions = {time: {} for time in range(rounds)}
@@ -146,7 +146,7 @@ def cooperation_level_within_g1_degree_heterogenity(b, r, opt):
 
 if __name__ == '__main__':
     process_list = []
-    b_list = [3, 4, 5, 6]
+    b_list = [3, 4, 5]
     r_list = [1, 2, 3, 4, 5, 6, 7]
     opts = ['high2high', 'high2low', 'low2low']
     for b in b_list:
