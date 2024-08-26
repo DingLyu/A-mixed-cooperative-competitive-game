@@ -1,6 +1,6 @@
-# Code for "Evolution of Cooperation in a Mixed Cooperative-competitive Structured Population"
+# Codes for "Evolution of Cooperation in a Mixed Cooperative-competitive Structured Population"
 
-## submitted to PRSA
+## Published at Physica A (https://www.sciencedirect.com/science/article/abs/pii/S0378437124005442?via%3Dihub)
 
 ## isolated_group.py, isolated_group_details.py for Figure 2
 
